@@ -6,86 +6,86 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
 
-const Index = () => {
+export default function Index() {
+  const [carType, setCarType] = useState('sedan');
   const [distance, setDistance] = useState('');
-  const [carType, setCarType] = useState('');
   const [calculatedPrice, setCalculatedPrice] = useState<number | null>(null);
 
   const calculatePrice = () => {
-    const basePrice = carType === 'sedan' ? 30 : carType === 'suv' ? 40 : 50;
-    const dist = parseInt(distance) || 0;
-    setCalculatedPrice(basePrice * dist);
+    const dist = parseInt(distance);
+    if (!dist || dist <= 0) return;
+
+    let baseRate = 0;
+    switch (carType) {
+      case 'sedan':
+        baseRate = 25;
+        break;
+      case 'suv':
+        baseRate = 32;
+        break;
+      case 'premium':
+        baseRate = 45;
+        break;
+    }
+
+    const price = Math.round(dist * baseRate);
+    setCalculatedPrice(price);
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="fixed top-0 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <Icon name="Truck" size={32} className="text-accent" />
-            <h1 className="text-2xl font-bold">АвтоТранс</h1>
+            <Icon name="Truck" size={28} className="text-accent" />
+            <span className="text-xl font-bold">АвтоТранс</span>
           </div>
-          <nav className="hidden md:flex gap-8">
-            <a href="#calculator" className="text-muted-foreground hover:text-foreground transition-colors">Калькулятор</a>
-            <a href="#services" className="text-muted-foreground hover:text-foreground transition-colors">Услуги</a>
-            <a href="#geography" className="text-muted-foreground hover:text-foreground transition-colors">География</a>
-            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">О компании</a>
-            <a href="#reviews" className="text-muted-foreground hover:text-foreground transition-colors">Отзывы</a>
-            <a href="#contacts" className="text-muted-foreground hover:text-foreground transition-colors">Контакты</a>
+          <nav className="hidden md:flex gap-6">
+            <a href="#calculator" className="text-sm font-medium hover:text-accent transition-colors">
+              Калькулятор
+            </a>
+            <a href="#services" className="text-sm font-medium hover:text-accent transition-colors">
+              Услуги
+            </a>
+            <a href="#geography" className="text-sm font-medium hover:text-accent transition-colors">
+              География
+            </a>
+            <a href="#about" className="text-sm font-medium hover:text-accent transition-colors">
+              О компании
+            </a>
+            <a href="#reviews" className="text-sm font-medium hover:text-accent transition-colors">
+              Отзывы
+            </a>
+            <a href="#contact" className="text-sm font-medium hover:text-accent transition-colors">
+              Контакты
+            </a>
           </nav>
-          <Button className="hidden md:inline-flex">Заказать звонок</Button>
+          <Button>
+            <Icon name="Phone" size={18} className="mr-2" />
+            +7 (999) 123-45-67
+          </Button>
         </div>
       </header>
 
-      <section className="pt-32 pb-20 bg-gradient-to-b from-muted/30 to-background">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in">
-              <h2 className="text-5xl font-bold mb-6 leading-tight">
-                Надежная перевозка автомобилей по всей России
-              </h2>
-              <p className="text-xl text-muted-foreground mb-8">
-                Профессиональная транспортировка любых типов автомобилей с гарантией сохранности и точными сроками доставки
-              </p>
-              <div className="flex gap-4">
-                <Button size="lg" className="text-lg">
-                  <Icon name="Phone" size={20} className="mr-2" />
-                  +7 (800) 555-35-35
-                </Button>
-                <Button size="lg" variant="outline" className="text-lg">
-                  Рассчитать стоимость
-                </Button>
-              </div>
-            </div>
-            <div className="animate-fade-in">
-              <img 
-                src="https://cdn.poehali.dev/projects/68d0eb06-a606-4cc9-8d35-80c610cc0941/files/ba511412-b91e-41c7-b84f-2a51c33cb8ae.jpg" 
-                alt="Автовоз с автомобилями" 
-                className="rounded-lg shadow-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-5xl font-bold mb-2">15+</div>
-              <div className="text-lg">лет на рынке</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">50000+</div>
-              <div className="text-lg">перевезено авто</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">100%</div>
-              <div className="text-lg">страхование груза</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">24/7</div>
-              <div className="text-lg">поддержка клиентов</div>
+      <section className="relative py-20 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-background to-background"></div>
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              Перевозка автомобилей по России
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              Безопасная доставка вашего автомобиля в любую точку страны. Работаем с 2010 года, перевезли более 50 000 автомобилей.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}>
+                <Icon name="Calculator" size={20} className="mr-2" />
+                Рассчитать стоимость
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+                <Icon name="MessageCircle" size={20} className="mr-2" />
+                Связаться с нами
+              </Button>
             </div>
           </div>
         </div>
@@ -160,13 +160,11 @@ const Index = () => {
                   <Icon name="Car" size={24} className="text-accent" />
                 </div>
                 <CardTitle>Легковые автомобили</CardTitle>
-                <CardDescription>Седаны, хэтчбеки, универсалы</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Безопасная транспортировка легковых автомобилей любых марок на крытых и открытых автовозах
+                <p className="text-muted-foreground">
+                  Перевозка легковых автомобилей любых марок на автовозах с полной страховкой
                 </p>
-                <div className="text-2xl font-bold text-accent">от 30 ₽/км</div>
               </CardContent>
             </Card>
 
@@ -176,133 +174,67 @@ const Index = () => {
                   <Icon name="Truck" size={24} className="text-accent" />
                 </div>
                 <CardTitle>Внедорожники</CardTitle>
-                <CardDescription>SUV, кроссоверы</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Специализированная перевозка крупногабаритных автомобилей с соблюдением всех мер безопасности
+                <p className="text-muted-foreground">
+                  Специальное оборудование для перевозки внедорожников и кроссоверов любых размеров
                 </p>
-                <div className="text-2xl font-bold text-accent">от 40 ₽/км</div>
               </CardContent>
             </Card>
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-4">
-                  <Icon name="Gem" size={24} className="text-accent" />
+                  <Icon name="Star" size={24} className="text-accent" />
                 </div>
-                <CardTitle>Премиум класс</CardTitle>
-                <CardDescription>Элитные и коллекционные авто</CardDescription>
+                <CardTitle>Премиум авто</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Индивидуальный подход к транспортировке дорогих автомобилей в закрытых автовозах
+                <p className="text-muted-foreground">
+                  Закрытые автовозы для перевозки премиальных и коллекционных автомобилей
                 </p>
-                <div className="text-2xl font-bold text-accent">от 50 ₽/км</div>
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
 
-      <section id="geography" className="py-20">
+      <section id="geography" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6">География работы</h2>
+              <h2 className="text-4xl font-bold mb-6">География перевозок</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Осуществляем перевозки по всей территории России с филиалами в крупнейших городах
+                Мы работаем по всей России. Наши автовозы регулярно курсируют между крупнейшими городами страны.
               </p>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Москва и МО</div>
-                    <div className="text-muted-foreground text-sm">Основной логистический центр</div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  'Москва',
+                  'Санкт-Петербург',
+                  'Новосибирск',
+                  'Екатеринбург',
+                  'Казань',
+                  'Нижний Новгород',
+                  'Челябинск',
+                  'Самара',
+                  'Ростов-на-Дону',
+                  'Уфа',
+                  'Красноярск',
+                  'Воронеж'
+                ].map((city) => (
+                  <div key={city} className="flex items-center gap-2">
+                    <Icon name="MapPin" size={18} className="text-accent flex-shrink-0" />
+                    <span>{city}</span>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Санкт-Петербург</div>
-                    <div className="text-muted-foreground text-sm">Северо-Западный филиал</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Екатеринбург</div>
-                    <div className="text-muted-foreground text-sm">Уральский регион</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Новосибирск</div>
-                    <div className="text-muted-foreground text-sm">Сибирский филиал</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Владивосток</div>
-                    <div className="text-muted-foreground text-sm">Дальневосточный регион</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Казань</div>
-                    <div className="text-muted-foreground text-sm">Приволжский федеральный округ</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Краснодар</div>
-                    <div className="text-muted-foreground text-sm">Южный регион</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Ростов-на-Дону</div>
-                    <div className="text-muted-foreground text-sm">Юг России</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Нижний Новгород</div>
-                    <div className="text-muted-foreground text-sm">Приволжье</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Челябинск</div>
-                    <div className="text-muted-foreground text-sm">Урал</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Красноярск</div>
-                    <div className="text-muted-foreground text-sm">Центральная Сибирь</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
-                  <div>
-                    <div className="font-semibold mb-1">Хабаровск</div>
-                    <div className="text-muted-foreground text-sm">Дальний Восток</div>
-                  </div>
-                </div>
+                ))}
               </div>
+              <p className="text-muted-foreground mt-6">
+                + доставка в любой другой город России
+              </p>
             </div>
-            <div>
+            <div className="relative">
               <img 
-                src="https://cdn.poehali.dev/projects/68d0eb06-a606-4cc9-8d35-80c610cc0941/files/9561174f-14c5-4024-a85a-7b217fda17a2.jpg" 
+                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=600&fit=crop" 
                 alt="География перевозок" 
                 className="rounded-lg shadow-xl"
               />
@@ -311,34 +243,58 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="about" className="py-20 bg-muted/30">
+      <section id="about" className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">О компании</h2>
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-lg text-muted-foreground mb-6">
-              АвтоТранс — это команда профессионалов с 15-летним опытом в сфере автомобильных перевозок. 
-              Мы специализируемся на безопасной транспортировке автомобилей любых классов по всей России.
-            </p>
-            <p className="text-lg text-muted-foreground mb-8">
-              Наш автопарк включает современные автовозы, оснащенные системами безопасной фиксации и GPS-мониторинга. 
-              Каждая перевозка застрахована, а клиенты получают полное сопровождение на всех этапах доставки.
-            </p>
-            <div className="grid md:grid-cols-3 gap-8 mt-12">
-              <div className="text-center">
-                <Icon name="Shield" size={48} className="text-accent mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Безопасность</h3>
-                <p className="text-muted-foreground">100% страхование каждого груза</p>
-              </div>
-              <div className="text-center">
-                <Icon name="Clock" size={48} className="text-accent mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Пунктуальность</h3>
-                <p className="text-muted-foreground">Точное соблюдение сроков</p>
-              </div>
-              <div className="text-center">
-                <Icon name="Award" size={48} className="text-accent mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Качество</h3>
-                <p className="text-muted-foreground">Проверенные стандарты работы</p>
-              </div>
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-12">Почему выбирают нас</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <Icon name="Shield" size={32} className="text-accent mb-2" />
+                  <CardTitle>Полная страховка</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Каждая перевозка застрахована на полную стоимость автомобиля
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <Icon name="Clock" size={32} className="text-accent mb-2" />
+                  <CardTitle>Точные сроки</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Строго соблюдаем договорные сроки доставки
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <Icon name="Users" size={32} className="text-accent mb-2" />
+                  <CardTitle>Опытные водители</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Водители со стажем более 10 лет и безупречной репутацией
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <Icon name="FileText" size={32} className="text-accent mb-2" />
+                  <CardTitle>Полный пакет документов</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Оформляем все необходимые документы для перевозки
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -346,30 +302,30 @@ const Index = () => {
 
       <section id="reviews" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Отзывы клиентов</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <h2 className="text-4xl font-bold text-center mb-4">Отзывы клиентов</h2>
+          <p className="text-center text-muted-foreground mb-12 text-lg">
+            Что говорят о нас наши клиенты
+          </p>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                    <Icon name="User" size={24} className="text-accent" />
+                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                    <Icon name="User" size={20} className="text-accent" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg">Александр Петров</CardTitle>
-                    <div className="flex text-yellow-500">
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
+                    <CardTitle className="text-base">Алексей М.</CardTitle>
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <Icon key={i} name="Star" size={14} className="text-accent fill-accent" />
+                      ))}
                     </div>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Перевозили BMW X5 из Москвы в Сочи. Все прошло отлично, автомобиль доставили точно в срок, 
-                  без единой царапины. Рекомендую!
+                  Перевозили BMW из Москвы в Екатеринбург. Все четко, в срок, авто доставили в идеальном состоянии. Рекомендую!
                 </p>
               </CardContent>
             </Card>
@@ -377,25 +333,22 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                    <Icon name="User" size={24} className="text-accent" />
+                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                    <Icon name="User" size={20} className="text-accent" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg">Мария Соколова</CardTitle>
-                    <div className="flex text-yellow-500">
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
+                    <CardTitle className="text-base">Марина К.</CardTitle>
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <Icon key={i} name="Star" size={14} className="text-accent fill-accent" />
+                      ))}
                     </div>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Очень довольна сервисом! Оперативно рассчитали стоимость, забрали машину прямо из дома. 
-                  На связи были постоянно. Спасибо!
+                  Отличный сервис! Помогли с оформлением документов, постоянно на связи. Машину доставили без единой царапины.
                 </p>
               </CardContent>
             </Card>
@@ -403,25 +356,22 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                    <Icon name="User" size={24} className="text-accent" />
+                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                    <Icon name="User" size={20} className="text-accent" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg">Дмитрий Волков</CardTitle>
-                    <div className="flex text-yellow-500">
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
-                      <Icon name="Star" size={16} />
+                    <CardTitle className="text-base">Дмитрий С.</CardTitle>
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <Icon key={i} name="Star" size={14} className="text-accent fill-accent" />
+                      ))}
                     </div>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Пользуюсь услугами АвтоТранс уже 3 года. Перевозил более 10 автомобилей для автосалона. 
-                  Надежная компания!
+                  Уже третий раз пользуюсь услугами компании. Цены адекватные, сроки соблюдают. Профессионалы своего дела!
                 </p>
               </CardContent>
             </Card>
@@ -429,39 +379,102 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="contacts" className="py-20 bg-primary text-primary-foreground">
+      <section id="contact" className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Контакты</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <Icon name="Phone" size={48} className="mx-auto mb-4" />
-              <h3 className="font-semibold mb-2 text-xl">Телефон</h3>
-              <p className="text-lg">+7 (800) 555-35-35</p>
-              <p className="text-sm opacity-80">Круглосуточно</p>
-            </div>
-            <div className="text-center">
-              <Icon name="Mail" size={48} className="mx-auto mb-4" />
-              <h3 className="font-semibold mb-2 text-xl">Email</h3>
-              <p className="text-lg">info@avtotrans.ru</p>
-              <p className="text-sm opacity-80">Ответим в течение часа</p>
-            </div>
-            <div className="text-center">
-              <Icon name="MapPin" size={48} className="mx-auto mb-4" />
-              <h3 className="font-semibold mb-2 text-xl">Адрес</h3>
-              <p className="text-lg">Москва, ул. Логистическая, 15</p>
-              <p className="text-sm opacity-80">Пн-Вс: 24/7</p>
-            </div>
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-4">Свяжитесь с нами</h2>
+            <p className="text-lg text-muted-foreground mb-12">
+              Готовы ответить на все ваши вопросы и рассчитать точную стоимость перевозки
+            </p>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="grid gap-6">
+                  <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
+                    <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <Icon name="Phone" size={24} className="text-accent" />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-medium">Телефон</div>
+                      <a href="tel:+79991234567" className="text-accent hover:underline">
+                        +7 (999) 123-45-67
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
+                    <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <Icon name="Mail" size={24} className="text-accent" />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-medium">Email</div>
+                      <a href="mailto:info@avtotrans.ru" className="text-accent hover:underline">
+                        info@avtotrans.ru
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
+                    <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <Icon name="Clock" size={24} className="text-accent" />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-medium">Режим работы</div>
+                      <div className="text-muted-foreground">Ежедневно с 8:00 до 22:00</div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
-      <footer className="py-8 border-t">
-        <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2024 АвтоТранс. Все права защищены.</p>
+      <footer className="border-t py-12 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Icon name="Truck" size={24} className="text-accent" />
+                <span className="text-lg font-bold">АвтоТранс</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Надежная перевозка автомобилей по России с 2010 года
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Навигация</h3>
+              <div className="space-y-2 text-sm">
+                <a href="#services" className="block text-muted-foreground hover:text-accent transition-colors">
+                  Услуги
+                </a>
+                <a href="#geography" className="block text-muted-foreground hover:text-accent transition-colors">
+                  География
+                </a>
+                <a href="#about" className="block text-muted-foreground hover:text-accent transition-colors">
+                  О компании
+                </a>
+                <a href="#contact" className="block text-muted-foreground hover:text-accent transition-colors">
+                  Контакты
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Контакты</h3>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div>+7 (999) 123-45-67</div>
+                <div>info@avtotrans.ru</div>
+                <div>Работаем ежедневно 8:00 - 22:00</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
+            © 2024 АвтоТранс. Все права защищены.
+          </div>
         </div>
       </footer>
     </div>
   );
-};
-
-export default Index;
+}
