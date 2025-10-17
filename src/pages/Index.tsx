@@ -26,10 +26,10 @@ const Index = () => {
             <h1 className="text-2xl font-bold">АвтоТранс</h1>
           </div>
           <nav className="hidden md:flex gap-8">
+            <a href="#calculator" className="text-muted-foreground hover:text-foreground transition-colors">Калькулятор</a>
             <a href="#services" className="text-muted-foreground hover:text-foreground transition-colors">Услуги</a>
             <a href="#geography" className="text-muted-foreground hover:text-foreground transition-colors">География</a>
             <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">О компании</a>
-            <a href="#calculator" className="text-muted-foreground hover:text-foreground transition-colors">Калькулятор</a>
             <a href="#reviews" className="text-muted-foreground hover:text-foreground transition-colors">Отзывы</a>
             <a href="#contacts" className="text-muted-foreground hover:text-foreground transition-colors">Контакты</a>
           </nav>
@@ -87,6 +87,62 @@ const Index = () => {
               <div className="text-5xl font-bold mb-2">24/7</div>
               <div className="text-lg">поддержка клиентов</div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="calculator" className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-4">Калькулятор стоимости</h2>
+            <p className="text-center text-muted-foreground mb-12 text-lg">
+              Рассчитайте примерную стоимость перевозки вашего автомобиля
+            </p>
+            <Card>
+              <CardHeader>
+                <CardTitle>Быстрый расчет</CardTitle>
+                <CardDescription>Заполните данные для получения предварительной стоимости</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="carType">Тип автомобиля</Label>
+                  <Select value={carType} onValueChange={setCarType}>
+                    <SelectTrigger id="carType">
+                      <SelectValue placeholder="Выберите тип" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="sedan">Легковой (седан, хэтчбек)</SelectItem>
+                      <SelectItem value="suv">Внедорожник (SUV, кроссовер)</SelectItem>
+                      <SelectItem value="premium">Премиум класс</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="distance">Расстояние (км)</Label>
+                  <Input 
+                    id="distance" 
+                    type="number" 
+                    placeholder="Введите расстояние" 
+                    value={distance}
+                    onChange={(e) => setDistance(e.target.value)}
+                  />
+                </div>
+
+                <Button className="w-full" size="lg" onClick={calculatePrice}>
+                  <Icon name="Calculator" size={20} className="mr-2" />
+                  Рассчитать стоимость
+                </Button>
+
+                {calculatedPrice !== null && (
+                  <div className="bg-accent/10 border border-accent/20 rounded-lg p-6 text-center animate-fade-in">
+                    <div className="text-sm text-muted-foreground mb-2">Примерная стоимость</div>
+                    <div className="text-4xl font-bold text-accent">{calculatedPrice.toLocaleString('ru-RU')} ₽</div>
+                    <div className="text-sm text-muted-foreground mt-2">Точная цена рассчитывается индивидуально</div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -149,7 +205,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="geography" className="py-20 bg-muted/30">
+      <section id="geography" className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -157,40 +213,89 @@ const Index = () => {
               <p className="text-lg text-muted-foreground mb-8">
                 Осуществляем перевозки по всей территории России с филиалами в крупнейших городах
               </p>
-              <div className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3">
                   <Icon name="MapPin" className="text-accent mt-1" size={20} />
                   <div>
                     <div className="font-semibold mb-1">Москва и МО</div>
-                    <div className="text-muted-foreground">Основной логистический центр</div>
+                    <div className="text-muted-foreground text-sm">Основной логистический центр</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Icon name="MapPin" className="text-accent mt-1" size={20} />
                   <div>
                     <div className="font-semibold mb-1">Санкт-Петербург</div>
-                    <div className="text-muted-foreground">Северо-Западный филиал</div>
+                    <div className="text-muted-foreground text-sm">Северо-Западный филиал</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Icon name="MapPin" className="text-accent mt-1" size={20} />
                   <div>
                     <div className="font-semibold mb-1">Екатеринбург</div>
-                    <div className="text-muted-foreground">Уральский регион</div>
+                    <div className="text-muted-foreground text-sm">Уральский регион</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Icon name="MapPin" className="text-accent mt-1" size={20} />
                   <div>
                     <div className="font-semibold mb-1">Новосибирск</div>
-                    <div className="text-muted-foreground">Сибирский филиал</div>
+                    <div className="text-muted-foreground text-sm">Сибирский филиал</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Icon name="MapPin" className="text-accent mt-1" size={20} />
                   <div>
                     <div className="font-semibold mb-1">Владивосток</div>
-                    <div className="text-muted-foreground">Дальневосточный регион</div>
+                    <div className="text-muted-foreground text-sm">Дальневосточный регион</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
+                  <div>
+                    <div className="font-semibold mb-1">Казань</div>
+                    <div className="text-muted-foreground text-sm">Приволжский федеральный округ</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
+                  <div>
+                    <div className="font-semibold mb-1">Краснодар</div>
+                    <div className="text-muted-foreground text-sm">Южный регион</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
+                  <div>
+                    <div className="font-semibold mb-1">Ростов-на-Дону</div>
+                    <div className="text-muted-foreground text-sm">Юг России</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
+                  <div>
+                    <div className="font-semibold mb-1">Нижний Новгород</div>
+                    <div className="text-muted-foreground text-sm">Приволжье</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
+                  <div>
+                    <div className="font-semibold mb-1">Челябинск</div>
+                    <div className="text-muted-foreground text-sm">Урал</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
+                  <div>
+                    <div className="font-semibold mb-1">Красноярск</div>
+                    <div className="text-muted-foreground text-sm">Центральная Сибирь</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Icon name="MapPin" className="text-accent mt-1" size={20} />
+                  <div>
+                    <div className="font-semibold mb-1">Хабаровск</div>
+                    <div className="text-muted-foreground text-sm">Дальний Восток</div>
                   </div>
                 </div>
               </div>
@@ -206,7 +311,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="about" className="py-20">
+      <section id="about" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">О компании</h2>
           <div className="max-w-3xl mx-auto text-center">
@@ -239,63 +344,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="calculator" className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-4">Калькулятор стоимости</h2>
-            <p className="text-center text-muted-foreground mb-12 text-lg">
-              Рассчитайте примерную стоимость перевозки вашего автомобиля
-            </p>
-            <Card>
-              <CardHeader>
-                <CardTitle>Быстрый расчет</CardTitle>
-                <CardDescription>Заполните данные для получения предварительной стоимости</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="carType">Тип автомобиля</Label>
-                  <Select value={carType} onValueChange={setCarType}>
-                    <SelectTrigger id="carType">
-                      <SelectValue placeholder="Выберите тип" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="sedan">Легковой (седан, хэтчбек)</SelectItem>
-                      <SelectItem value="suv">Внедорожник (SUV, кроссовер)</SelectItem>
-                      <SelectItem value="premium">Премиум класс</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="distance">Расстояние (км)</Label>
-                  <Input 
-                    id="distance" 
-                    type="number" 
-                    placeholder="Введите расстояние" 
-                    value={distance}
-                    onChange={(e) => setDistance(e.target.value)}
-                  />
-                </div>
-
-                <Button className="w-full" size="lg" onClick={calculatePrice}>
-                  <Icon name="Calculator" size={20} className="mr-2" />
-                  Рассчитать стоимость
-                </Button>
-
-                {calculatedPrice !== null && (
-                  <div className="bg-accent/10 border border-accent/20 rounded-lg p-6 text-center animate-fade-in">
-                    <div className="text-sm text-muted-foreground mb-2">Примерная стоимость</div>
-                    <div className="text-4xl font-bold text-accent">{calculatedPrice.toLocaleString('ru-RU')} ₽</div>
-                    <div className="text-sm text-muted-foreground mt-2">Точная цена рассчитывается индивидуально</div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      <section id="reviews" className="py-20">
+      <section id="reviews" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Отзывы клиентов</h2>
           <div className="grid md:grid-cols-3 gap-8">
